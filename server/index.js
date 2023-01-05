@@ -9,8 +9,10 @@ const saveMessage = require('./services/save-message');
 const getMessages = require('./services/get-messages');
 const leaveRoom = require('./utils/leave-room');
 const connectDB = require('./config/db.js');
+const route = require('./routes/index.js');
 
-app.use(cors()); 
+app.use(cors());
+app.use(route);
 connectDB();
 
 const server = http.createServer(app);
@@ -56,7 +58,7 @@ io.on('connection', (socket) => {
     // Get last 100 messages sent in the chat room
     getMessages(room)
       .then((last100Messages) => {
-        console.log('latest messages', last100Messages);
+        // console.log('latest messages', last100Messages);
         //last100Messages.createdAt = last100Messages.createdAt;
         socket.emit('last_100_messages', last100Messages);
       })
